@@ -19,7 +19,9 @@
   "homepage": "https://github.com/tejasdesai0531/simplyrent-panel-api#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "joi": "^17.7.1",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "mysql": "^2.18.1"

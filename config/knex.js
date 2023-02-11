@@ -1,12 +1,11 @@
-const config = require('./config')
 const mysql = require('knex') ({
     client: 'mysql',
     connection: {
-        host: config.DB_HOST,
-        port: config.DB_PORT,
-        user: config.DB_USER,
-        password: config.DB_PASSWORD,
-        dababase: config.DB_NAME,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        dababase: process.env.DB_NAME,
         timezone: "IST",
     },
     userNullAsDefault: true,
