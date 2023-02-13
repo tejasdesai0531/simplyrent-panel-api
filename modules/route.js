@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var cors = require('cors')
 
 
 const cityRouter = require('./city/city.route')

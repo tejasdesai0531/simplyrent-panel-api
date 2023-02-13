@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt')
 const knex = require('../../config/knex')
 const jwt = require('jsonwebtoken')
 
-const config = require('../../config/config')
 
 async function login(req, res) {
 
@@ -35,7 +34,7 @@ async function login(req, res) {
           id: user.id,
           email: user.email,
         },
-        config.JWT_SECRET
+        process.env.JWT_SECRET
     );
 
 
