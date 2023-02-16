@@ -1,12 +1,17 @@
-const {body} = require('express-validator')
+const { body, query} = require('express-validator');
 
-function addCityValidator() {
-    return [
-        body('name').notEmpty().withMessage('name is required'),
-        body('code').notEmpty().withMessage('code is required')
-    ]
-}
+const addCityValidators = [
+  body('name').not().isEmpty(),
+  body('code').not().isEmpty(),
+  body('status').isBoolean()
+];
+
+const cityListValidators =  [
+    query('page').optional().isInt({ min: 1 }),
+    query('limit').optional().isInt({ min: 1, max: 100 })
+  ]
 
 module.exports = {
-    addCityValidator
+    addCityValidators,
+    cityListValidators
 }

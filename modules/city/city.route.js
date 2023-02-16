@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
+const upload = require('../../middlewares/upload-image')
 
 const cityController = require('./city.controller')
-const cityValidator = require('./city.validator')
-console.log(cityValidator)
+const  {addCityValidators,  cityListValidators} = require('./city.validator')
 
-router.get('/', cityController.getCityList)
+
+router.get('/', cityListValidators, cityController.getCityList)
 router.get('/:id', cityController.getCityDetails)
-router.post('/', cityValidator.addCityValidator(), cityController.addCity)
+router.post('/', upload.single('image_url'), cityController.addCity)
+router.put('/:id', addCityValidators, cityController.editCity)
 
 
 

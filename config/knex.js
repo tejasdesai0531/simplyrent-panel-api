@@ -12,7 +12,7 @@ const mysql = require('knex') ({
     acquireConnectionTImeout: 300000,
 });
 
-mysql.raw("SELECT 1").then(() => {
+mysql.raw("use " + process.env.DB_NAME).then(() => {
     console.log('MySQL connected');
 })
 .catch((e) => {
