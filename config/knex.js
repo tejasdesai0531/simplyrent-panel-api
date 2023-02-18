@@ -9,7 +9,7 @@ const mysql = require('knex') ({
         timezone: "IST",
     },
     userNullAsDefault: true,
-    acquireConnectionTImeout: 300000,
+    acquireConnectionTImeout: 3000000,
 });
 
 mysql.raw("use " + process.env.DB_NAME).then(() => {
@@ -20,4 +20,11 @@ mysql.raw("use " + process.env.DB_NAME).then(() => {
     console.log(e);
 });
 
-module.exports = mysql;
+
+
+function connect() {
+
+  return  mysql.raw("use " + process.env.DB_NAME)
+} 
+
+module.exports =  mysql;

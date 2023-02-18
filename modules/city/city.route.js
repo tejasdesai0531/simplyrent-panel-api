@@ -8,7 +8,7 @@ const  {addCityValidators,  cityListValidators} = require('./city.validator')
 
 router.get('/', cityListValidators, cityController.getCityList)
 router.get('/:id', cityController.getCityDetails)
-router.post('/', upload.single('image_url'), cityController.addCity)
+router.post('/', upload.single('image'), addCityValidators, cityController.addCity)
 router.put('/:id', addCityValidators, cityController.editCity)
 
 

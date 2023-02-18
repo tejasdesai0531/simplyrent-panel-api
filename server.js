@@ -1,12 +1,20 @@
 require('dotenv').config()
 const app = require('./app')
-require('./config/knex')
+// const dbConnection = require('./config/knex')
 
 
-const port = process.env.PORT
 
+async function start() {
+  // await dbConnection.connect()
+  console.log('Mysql connected')
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+  app.listen(process.env.PORT, () => {
+    console.log(`Example app listening on port ${process.env.PORT}`)
   })
   
+
+}
+
+start()
+
+

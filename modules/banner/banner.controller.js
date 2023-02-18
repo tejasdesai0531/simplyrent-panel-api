@@ -4,7 +4,7 @@ const knex = require('../../config/knex')
  async function getBanner(req, res) {
 
     let id = req.params.id
-    let result = await knex('simplyrent_dev.banner').where("id", id).first()
+    let result = await knex('banner').where("id", id).first()
 
 
     res.send(result)
@@ -12,7 +12,7 @@ const knex = require('../../config/knex')
 
 async function getBannerList(req, res) {
 
-    let result = await knex('simplyrent_dev.banner')
+    let result = await knex('banner')
 
     res.send(result)
 }
@@ -35,7 +35,7 @@ async function addBanner(req, res) {
        
     }
    
-    let result = await knex('simplyrent_dev.banner').insert(banner)
+    let result = await knex('banner').insert(banner)
     res.send(result)
 }
 
