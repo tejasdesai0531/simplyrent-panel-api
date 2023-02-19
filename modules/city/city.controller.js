@@ -9,7 +9,7 @@ async function getCityList(req, res) {
     }
     
     const page = req.query.page || 1;
-    const limit = req.query.limit || 10;
+    const limit = req.query.limit || 5;
     const offset = (page - 1) * limit;
   
     //  Get the list of cities from the database with pagination
@@ -44,13 +44,13 @@ async function addCity(req, res) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+    return res.status(422).json({errors: errors.array()});
   }
 
   // verify if image is uploaded or not
 
   if(!req.file) {
-    return res.status(400).json({ message: 'No image uploaded' })
+    return res.status(400).json({ error: 'No image uploaded' })
   }
 
   const { name, code, status} = req.body;
@@ -77,8 +77,16 @@ async function editCity(req, res) {
     return res.status(422).json({ errors: errors.array() });
   }
   
-  const { name, code, status, image_url } = req.body;
+  const { name, code, status} = req.body;
   const id = req.params.id;
+  let cityDetails = {
+    name,
+    code,
+    status
+  }
+  if(req.file) {
+    cityDetails.image_url = req.file.location
+  }
   
   // Check if the city exists in the database
 

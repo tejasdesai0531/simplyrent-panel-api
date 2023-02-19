@@ -1,8 +1,8 @@
 const knex = require('../../config/knex')
-
+const { validationResult } = require("express-validator");
 
  async function getBanner(req, res) {
-
+    const errors = validatonResult(req);
     let id = req.params.id
     let result = await knex('banner').where("id", id).first()
 
