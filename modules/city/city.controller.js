@@ -40,6 +40,18 @@ async function getCityDetails(req, res) {
   res.send(result);
 }
 
+
+async function uploadImage(req, res) {
+  if(!req.file) {
+    return res.status(400).json({ error: 'No image uploaded' })
+  }
+
+  res.status(200).send({
+    image_url: req.file.location,
+    message: "Image uploaded successfully"
+  })
+}
+
 async function addCity(req, res) {
   const errors = validationResult(req);
 
@@ -47,14 +59,8 @@ async function addCity(req, res) {
     return res.status(422).json({errors: errors.array()});
   }
 
-  // verify if image is uploaded or not
-
-  if(!req.file) {
-    return res.status(400).json({ error: 'No image uploaded' })
-  }
-
-  const { name, code, status} = req.body;
-  const image_url = req.file.location;
+  const { name, code, status, image_url} = req.body;
+  
   
   // Check if the city code or name already exists in the database
 
@@ -77,16 +83,9 @@ async function editCity(req, res) {
     return res.status(422).json({ errors: errors.array() });
   }
   
-  const { name, code, status} = req.body;
+  const { name, code, status, image_url} = req.body;
   const id = req.params.id;
-  let cityDetails = {
-    name,
-    code,
-    status
-  }
-  if(req.file) {
-    cityDetails.image_url = req.file.location
-  }
+ 
   
   // Check if the city exists in the database
 
@@ -117,5 +116,6 @@ module.exports = {
   getCityDetails,
   getCityList,
   addCity,
-  editCity
+  editCity,
+  uploadImage
 };

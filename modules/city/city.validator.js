@@ -3,7 +3,8 @@ const { body, query} = require('express-validator');
 const addCityValidators = [
   body('name').not().isEmpty(),
   body('code').not().isEmpty(),
-  body('status').isBoolean()
+  body('status').isBoolean(),
+  body('image_url').not().isEmpty()
 ];
 
 const cityListValidators =  [

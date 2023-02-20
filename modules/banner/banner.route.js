@@ -1,11 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const bannerController = require('./banner.controller')
+const upload = require('../../middlewares/upload-image')
 
-router.get('/', bannerController.getBannerList)
-router.get('/:id', bannerController.getBanner)
-router.post('/', bannerController.addBanner)
-// router.put('/:id', addBannerValidators, bannerController.editBanner)
+
+const bannerController = require('./banner.controller')
+const  {addBannerValidators, bannerListValidators} = require('./banner.validator')
+
+
+router.get('/', bannerListValidators, bannerController.getBannerList)
+router.get('/:id', bannerController.getBannerDetails)
+router.post('/', addBannerValidators, bannerController.addBanner)
+router.put('/:id',upload.single('image'), addBannerValidators, bannerController.editBanner)
+
 
 
 
