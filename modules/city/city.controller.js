@@ -32,6 +32,7 @@ async function getCityList(req, res) {
 }
 
 async function getCityDetails(req, res) {
+  
   let id = req.params.id;
   let result = await knex("city").where("id", id).first();
 

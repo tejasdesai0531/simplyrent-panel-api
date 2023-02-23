@@ -3,7 +3,8 @@ const { body, query} = require('express-validator');
 const addBannerValidators = [
   body('image_url').not().isEmpty(),
   body('redirect_url').not().isEmpty(),
-  body('status').isBoolean()
+  body('status').isBoolean(),
+  body('city_code').not().isEmpty()
 ];
 
 const bannerListValidators =  [

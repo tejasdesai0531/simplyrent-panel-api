@@ -10,7 +10,8 @@ const  {addBannerValidators, bannerListValidators} = require('./banner.validator
 router.get('/', bannerListValidators, bannerController.getBannerList)
 router.get('/:id', bannerController.getBannerDetails)
 router.post('/', addBannerValidators, bannerController.addBanner)
-router.put('/:id',upload.single('image'), addBannerValidators, bannerController.editBanner)
+router.put('/:id', addBannerValidators, bannerController.editBanner)
+router.post('/upload', upload.single('image'), bannerController.uploadBannerImage)
 
 
 
