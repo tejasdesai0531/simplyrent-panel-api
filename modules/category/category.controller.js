@@ -12,20 +12,33 @@ async function getCategoryList(req, res) {
     const limit = req.query.limit || 10
     const offset = (page - 1) * limit
 
-
+    //  Get the list of category from the database with pagination 
 
     const categories = await knex('categories')
-    .orderBy('id', 'desc')
-    .limit(limit)
-    .offset(offset)
+      .join('city', 'city.code', 'categories.city_code')
+      .select(
+       'categories.id',
+       'categories.name', 
+       'categories.code', 
+       'categories.url_code', 
+       'categories.image_url',
+       'categories.status',
+       'city.name as city_name'
+      )
+      .orderBy('id', 'asc')
+      .limit(limit)
+      .offset(offset)
+
+    //  Get the total number of banners in the database
 
     const totalCategories = await knex('categories').count('id as count').first()
+
+    // Calculate the total number of pages
 
     const totalPages = Math.ceil(totalCategories.count / limit)
 
     return res.status(200).json({categories, page, limit, totalPages, totalCategories: totalCategories.count })
     
-
 }
 
 async function getCategoryDetails(req, res) {
@@ -55,11 +68,17 @@ async function addCategories(req, res) {
         return res.status(422).json({errors: errors.array()})
     }
 
-    const { name, code, url_code, image_url, city_code, status} = req.body
-    
+    const {name, code, url_code, image_url, city_code, status} = req.body
+
+    // check if city is exists in a database    
+    const isCityExixts = await knex('city').where('code', city_code).first()
+   
+    if(!isCityExixts) {
+        return res.status(400).json({error: 'city Code is invalid'})
+    }
 
 
-
+    // Insert the category into the database
     await knex('categories').insert({name, code, url_code, image_url, city_code, status})
 
     return res.status(201).json({message: 'category added successfully'})

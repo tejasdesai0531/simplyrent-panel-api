@@ -16,7 +16,7 @@ async function getBannerList(req, res) {
 
     const banners = await knex('banner')
       .join('city', 'city.code', 'banner.city_code')
-      .select('banner.id', 'banner.image_url', 'banner.status', 'city.name as city_name')
+      .select('banner.id', 'banner.name', 'banner.redirect_url', 'banner.status', 'city.name as city_name')
       .orderBy('id', 'asc')
       .limit(limit)
       .offset(offset)
@@ -53,24 +53,26 @@ async function uploadBannerImage(req, res) {
 }
 
 async function addBanner(req, res) {
-    // console.log(req.body)
+    //  console.log(req.body)
+
     const errors = validationResult(req)
 
     if(!errors.isEmpty()) {
     
         return res.status(422).json({errors: errors.array()})
     }
-   
+    
     const { image_url, redirect_url, status, city_code} = req.body
     
+      
+    // Check if the city exists or not in the database
 
-    // Check if the banner image or redirect_url already exists in the database
-
-    const banner = await knex('banner').where({image_url}).orWhere({redirect_url}).first()
-
-    if(banner) {
-        return res.status(400).json({error: 'banner already exists'})
+    const isCityExixts = await knex('city').where('code', city_code).first()
+   
+    if(!isCityExixts) {
+        return res.status(400).json({error: 'city Code is invalid'})
     }
+    // console.log(code)
 
     // Insert the banner into the database
 
