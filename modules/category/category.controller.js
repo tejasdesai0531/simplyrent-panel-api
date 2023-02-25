@@ -15,21 +15,17 @@ async function getCategoryList(req, res) {
     //  Get the list of category from the database with pagination 
 
     const categories = await knex('categories')
-      .join('city', 'city.code', 'categories.city_code')
       .select(
        'categories.id',
        'categories.name', 
-       'categories.code', 
        'categories.url_code', 
-       'categories.image_url',
-       'categories.status',
-       'city.name as city_name'
+       'categories.image_url'
       )
       .orderBy('id', 'asc')
       .limit(limit)
       .offset(offset)
 
-    //  Get the total number of banners in the database
+    //  Get the total number of category  in the database
 
     const totalCategories = await knex('categories').count('id as count').first()
 
@@ -68,18 +64,18 @@ async function addCategories(req, res) {
         return res.status(422).json({errors: errors.array()})
     }
 
-    const {name, code, url_code, image_url, city_code, status} = req.body
+    const {name, url_code, image_url} = req.body
 
     // check if city is exists in a database    
-    const isCityExixts = await knex('city').where('code', city_code).first()
+    // const isCityExixts = await knex('city').where('code', city_code).first()
    
-    if(!isCityExixts) {
-        return res.status(400).json({error: 'city Code is invalid'})
-    }
+    // if(!isCityExixts) {
+    //     return res.status(400).json({error: 'city Code is invalid'})
+    // }
 
 
     // Insert the category into the database
-    await knex('categories').insert({name, code, url_code, image_url, city_code, status})
+    await knex('categories').insert({name, url_code, image_url})
 
     return res.status(201).json({message: 'category added successfully'})
     
@@ -92,12 +88,9 @@ async function editCategory(req, res) {
     return res.status(422).json({ errors: errors.array() });
   }
   
-  const { name, code, url_code, image_url, city_code, status} = req.body;
+  const { name, url_code, image_url} = req.body;
   const id = req.params.id;
   
-  
-
-
   const category = await knex('categories').where({ id }).first();
   if (!category) {
     return res.status(404).json({ error: 'Category not found' });
@@ -105,7 +98,7 @@ async function editCategory(req, res) {
 
 
 
-  await knex('categories').where({ id }).update({ name, code, url_code, image_url, city_code, status })
+  await knex('categories').where({ id }).update({ name, url_code, image_url })
 
   return res.status(200).json({ message: 'Category updated successfully' })
 
