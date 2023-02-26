@@ -66,13 +66,12 @@ async function addCategories(req, res) {
 
     const {name, url_code, image_url} = req.body
 
-    // check if city is exists in a database    
-    // const isCityExixts = await knex('city').where('code', city_code).first()
+    // check if url_code is exists in a database    
+    const urlCodeExixts = await knex('categories').where('url_code', url_code).first()
    
-    // if(!isCityExixts) {
-    //     return res.status(400).json({error: 'city Code is invalid'})
-    // }
-
+    if(urlCodeExixts) {
+        return res.status(400).json({error: 'url_code already exists'})
+    }
 
     // Insert the category into the database
     await knex('categories').insert({name, url_code, image_url})
@@ -91,10 +90,20 @@ async function editCategory(req, res) {
   const { name, url_code, image_url} = req.body;
   const id = req.params.id;
   
+   // Check if the category exists in the database
+
   const category = await knex('categories').where({ id }).first();
   if (!category) {
     return res.status(404).json({ error: 'Category not found' });
   }
+
+  // check if url_code is exists in a database 
+
+  const urlCodeExixts = await knex('categories').where('url_code', url_code).first()
+ 
+  if(urlCodeExixts) {
+      return res.status(400).json({error: 'url_code already exists'})
+  } 
 
 
 

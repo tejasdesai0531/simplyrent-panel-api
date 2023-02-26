@@ -8,7 +8,7 @@ async function login(req, res) {
     const email = req.body.email
     const password = req.body.password
 
-    let user = await knex('User').select("*").where("email", email).first()
+    let user = await knex('users').select("*").where("email", email).first()
 
     if(!user) {
         res.send({
@@ -53,7 +53,7 @@ async function signup(req, res) {
     const email = req.body.email
     const password = req.body.password
 
-    let user = await knex('User').select("*").where("email", email).first()
+    let user = await knex('users').select("*").where("email", email).first()
 
     if(user) {
         res.send({
@@ -72,7 +72,7 @@ async function signup(req, res) {
         password: hashedPassword
     }
 
-    await knex('User').insert(newUser)
+    await knex('users').insert(newUser)
 
     res.send({
         error: false,

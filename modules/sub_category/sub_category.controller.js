@@ -69,18 +69,18 @@ async function addSubCategories(req, res) {
     const {name, url_code, image_url, category_id} = req.body
 
     // check if city is exists in a database    
-    const isCategoryExists = await knex('categories').where('id', category_id).andWhere('url_code', url_code).first()
+    const isCategoryExists = await knex('categories').where('id', category_id).first()
    
     if(!isCategoryExists) {
         return res.status(400).json({error: 'category id and category code is invalid'})
     }
 
-    //check if category exists in a database
-    // const isUrlCodeExists = await knex('categories').where('url_code', url_code).first()
+    //check if url_code exists in a database
+    const isUrlCodeExists = await knex('sub_categories').where('url_code', url_code).first()
 
-    // if(!isUrlCodeExists) {
-    //   return res.status(400).json({error: 'category code is invalid'})
-    // }
+    if(isUrlCodeExists) {
+      return res.status(400).json({error: 'url_code is already exists '})
+    }
 
 
     // Insert the category into the database
@@ -101,13 +101,21 @@ async function editSubCategory(req, res) {
   const id = req.params.id;
   
 
-
   const subCategory = await knex('sub_categories').where({ id }).first();
   if (!subCategory) {
     return res.status(404).json({ error: 'sub Category not found' });
+    
   }
 
+  // Check if the url_code already exists in the database
 
+  const existingSubCategory = await knex('sub_categories').where('id', id).andWhere(function() {
+    this.where('name', name).orWhere('url_code', url_code)
+  }).first()
+
+  if (existingSubCategory) {
+    return res.status(400).json({ error: 'City already exists' })
+  }
 
   await knex('sub_categories').where({ id }).update({ name, url_code, image_url, category_id})
 
