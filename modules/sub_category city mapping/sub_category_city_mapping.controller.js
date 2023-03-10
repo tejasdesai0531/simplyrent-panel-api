@@ -29,21 +29,21 @@ async function getSubCategoryCityMappingList(req, res) {
 
     let cityId = req.query.city_id
 
-    //  Get the list of category city mapping from the database with pagination 
+    //  Get the list of sub_category city mapping from the database with pagination 
 
-    const categoryList = await knex('sub_category_city_mapping')
+    const subCategoryList = await knex('sub_category_city_mapping')
       .join('city', 'city.id', 'sub_category_city_mapping.city_id')
-      .join('sub_categories', 'sub_categories.id', 'sub_category_city_mapping.category_id')
+      .join('sub_categories', 'sub_categories.id', 'sub_category_city_mapping.sub_category_id')
       .select(
        'sub_category_city_mapping.id',
        'sub_category_city_mapping.status',
        'sub_categories.name as sub_category_name',
-       'sub_city.name as city_name' 
+       'city.name as city_name' 
       )
       .where('sub_category_city_mapping.city_id', cityId)
       
 
-    return res.status(200).json({categoryList})
+    return res.status(200).json({subCategoryList})
     
 }
 
